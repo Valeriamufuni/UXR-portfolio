@@ -19,6 +19,10 @@
     --dark:       #0D1B2A;
     --mid:        #2C3E50;
     --muted:      #6B8CAE;
+    /* ambient tints (palette-driven) */
+    --glow:        rgba(27,108,168,0.30);
+    --glow-amber:  rgba(244,162,97,0.14);
+    --grid-dot:    rgba(93,173,226,0.16);
     --serif:      'Playfair Display', Georgia, serif;
     --sans:       'DM Sans', sans-serif;
   }
@@ -37,7 +41,7 @@
   /* ── NAV ── */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    background: rgba(10,48,85,0.96);
+    background: color-mix(in srgb, var(--navy) 95%, transparent);
     backdrop-filter: blur(12px);
     display: flex; align-items: center; justify-content: space-between;
     padding: 0 5%;
@@ -63,40 +67,68 @@
   }
   .nav-links a:hover { color: var(--amber-light); }
 
+  /* ── SCROLL PROGRESS ── */
+  .scroll-progress {
+    position: fixed; top: 0; left: 0; z-index: 200;
+    height: 2px; width: 0%;
+    background: linear-gradient(90deg, var(--amber), var(--amber-light));
+    transition: width 0.1s linear;
+  }
+
   /* ── HERO ── */
   #hero {
     min-height: 100vh;
     background: var(--navy);
-    display: flex; align-items: center;
-    padding: 80px 5% 60px;
+    display: flex; flex-direction: column;
+    padding: 120px max(6%, calc((100% - 1160px) / 2)) 56px;
     position: relative;
     overflow: hidden;
   }
-  .hero-orb {
-    position: absolute;
-    border-radius: 50%;
+  /* refined background: faint data dot-grid + one soft corner glow */
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(var(--grid-dot) 1px, transparent 1px);
+    background-size: 30px 30px;
+    -webkit-mask-image: radial-gradient(ellipse 90% 70% at 75% 30%, #000 0%, transparent 75%);
+            mask-image: radial-gradient(ellipse 90% 70% at 75% 30%, #000 0%, transparent 75%);
     pointer-events: none;
   }
-  .orb-1 { width: 520px; height: 520px; right: -100px; top: -100px; background: radial-gradient(circle, rgba(27,108,168,0.35) 0%, transparent 70%); }
-  .orb-2 { width: 300px; height: 300px; right: 80px; bottom: -60px; background: radial-gradient(circle, rgba(93,173,226,0.2) 0%, transparent 70%); }
-  .orb-3 { width: 180px; height: 180px; right: 260px; bottom: 40px; background: radial-gradient(circle, rgba(244,162,97,0.25) 0%, transparent 70%); }
+  .hero-glow {
+    position: absolute; right: -180px; top: -160px;
+    width: 640px; height: 640px; border-radius: 50%;
+    background: radial-gradient(circle, var(--glow) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-glow-amber {
+    position: absolute; right: 120px; bottom: -120px;
+    width: 320px; height: 320px; border-radius: 50%;
+    background: radial-gradient(circle, var(--glow-amber) 0%, transparent 70%);
+    pointer-events: none;
+  }
   .accent-bar {
     position: absolute; left: 0; top: 0; bottom: 0;
     width: 5px;
     background: linear-gradient(to bottom, var(--amber), var(--amber-light));
   }
-  .hero-content { position: relative; max-width: 680px; }
+  .hero-content {
+    position: relative; max-width: 720px;
+    flex: 1 1 auto;
+    display: flex; flex-direction: column; justify-content: center;
+    align-items: flex-start;
+  }
   .hero-eyebrow {
-    font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em;
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.2em;
     text-transform: uppercase; color: var(--amber-light);
     margin-bottom: 1.2rem;
+    white-space: nowrap;
   }
   .hero-name {
     font-family: var(--serif);
-    font-size: clamp(3rem, 7vw, 5.5rem);
+    font-size: clamp(3rem, 7vw, 5.6rem);
     font-weight: 700;
     color: var(--white);
-    line-height: 1.05;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
     margin-bottom: 1rem;
   }
   .hero-title {
@@ -130,10 +162,12 @@
   }
   .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(244,162,97,0.35); }
   .hero-bottom {
-    position: absolute; bottom: 32px; left: 5%; right: 5%;
+    position: relative;
+    flex: 0 0 auto;
+    margin-top: 48px;
     display: flex; gap: 2.5rem;
-    border-top: 1px solid rgba(255,255,255,0.08);
-    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 24px;
   }
   .hero-stat { display: flex; flex-direction: column; }
   .hero-stat-val {
@@ -147,18 +181,21 @@
   }
 
   /* ── SECTIONS ── */
-  section { padding: 90px 5%; }
+  /* full-bleed background, content capped & centered at ~1160px */
+  section { padding: 104px max(6%, calc((100% - 1160px) / 2)); }
   .section-label {
-    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.2em;
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.22em;
     text-transform: uppercase; color: var(--amber);
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.7rem;
   }
   .section-title {
     font-family: var(--serif);
-    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-size: clamp(1.9rem, 3vw, 2.7rem);
     color: var(--navy);
     margin-bottom: 1rem;
-    line-height: 1.2;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
   }
   .section-sub {
     font-size: 1rem; color: var(--muted);
@@ -170,13 +207,14 @@
   #about { background: var(--white); }
   .about-grid {
     display: grid;
-    grid-template-columns: 1fr 1.6fr;
+    grid-template-columns: 280px 1fr;
     gap: 4rem;
     align-items: start;
   }
   .about-photo {
     background: linear-gradient(135deg, var(--blue) 0%, var(--navy) 100%);
     aspect-ratio: 3/4;
+    max-width: 280px;
     border-radius: 4px;
     display: flex; align-items: center; justify-content: center;
     color: rgba(255,255,255,0.4);
@@ -241,7 +279,7 @@
   .hobbies-grid { display: flex; gap: 1rem; flex-wrap: wrap; }
   .hobby-card {
     background: var(--bg);
-    border: 1px solid rgba(27,108,168,0.12);
+    border: 1px solid color-mix(in srgb, var(--blue) 14%, transparent);
     border-radius: 4px;
     padding: 1.1rem 1.4rem;
     display: flex; flex-direction: column; gap: 0.4rem;
@@ -372,7 +410,7 @@
   }
   .cs-metric-label { font-size: 0.78rem; color: var(--muted); line-height: 1.4; }
   .cs-insight {
-    background: rgba(27,108,168,0.06);
+    background: color-mix(in srgb, var(--blue) 7%, transparent);
     border-left: 4px solid var(--blue);
     padding: 1rem 1.4rem;
     margin-top: 1.8rem;
@@ -501,7 +539,7 @@
     font-size: 0.72rem; font-weight: 700;
     text-transform: uppercase; letter-spacing: 0.16em;
     color: var(--blue);
-    border-bottom: 1px solid rgba(27,108,168,0.2);
+    border-bottom: 1px solid color-mix(in srgb, var(--blue) 22%, transparent);
     padding-bottom: 0.4rem;
     margin-bottom: 1.2rem;
   }
@@ -571,8 +609,8 @@
   .contact-card-val {
     font-size: 0.95rem; color: var(--white); font-weight: 500;
   }
-  .contact-orb-1 { position: absolute; right: -120px; top: -120px; width: 380px; height: 380px; border-radius: 50%; background: radial-gradient(circle, rgba(27,108,168,0.25) 0%, transparent 70%); pointer-events: none; }
-  .contact-orb-2 { position: absolute; left: -80px; bottom: -80px; width: 280px; height: 280px; border-radius: 50%; background: radial-gradient(circle, rgba(93,173,226,0.15) 0%, transparent 70%); pointer-events: none; }
+  .contact-orb-1 { position: absolute; inset: 0; background-image: radial-gradient(var(--grid-dot) 1px, transparent 1px); background-size: 30px 30px; -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 40%, #000 0%, transparent 72%); mask-image: radial-gradient(ellipse 80% 80% at 50% 40%, #000 0%, transparent 72%); pointer-events: none; }
+  .contact-orb-2 { position: absolute; left: 50%; top: 18%; transform: translateX(-50%); width: 520px; height: 360px; border-radius: 50%; background: radial-gradient(circle, var(--glow) 0%, transparent 70%); pointer-events: none; }
   .footer-line {
     border-top: 1px solid rgba(255,255,255,0.08);
     padding-top: 2rem;
@@ -603,6 +641,8 @@
 </head>
 <body>
 
+<div class="scroll-progress" id="scrollProgress"></div>
+
 <!-- NAV -->
 <nav>
   <div class="nav-logo">Valeriia <span>Portas</span></div>
@@ -617,14 +657,14 @@
 </nav>
 
 <!-- HERO -->
-<section id="hero">
+<section id="hero" style="background-color: rgb(10, 48, 84)">
   <div class="accent-bar"></div>
-  <div class="hero-orb orb-1"></div>
-  <div class="hero-orb orb-2"></div>
-  <div class="hero-orb orb-3"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow-amber"></div>
   <div class="hero-content">
-    <p class="hero-eyebrow">UX Research Portfolio · 2024</p>
-    <h1 class="hero-name">Valeriia<br>Portas</h1>
+    <p class="hero-eyebrow">UX RESEARCH PORTFOLIO</p>
+    <h1 class="hero-name" style="font-family: &quot;Playfair Display&quot;">Valeriia<br>Portas</h1>
     <p class="hero-title">Senior UX Researcher &amp; Consumer Research Manager</p>
     <div class="hero-divider"></div>
     <p class="hero-tagline">Translating complex human behavior into evidence-based design decisions — across healthcare, fintech, and enterprise products.</p>
@@ -746,7 +786,7 @@
   <div class="fade-up">
     <p class="section-label">Selected Work</p>
     <h2 class="section-title">Case Studies</h2>
-    <p class="section-sub">Three projects that showcase my range — from quant funnel analysis to company-wide strategic research.</p>
+    <p class="section-sub">Four projects that showcase my range — from quant funnel analysis to company-wide strategic research.</p>
   </div>
 
   <!-- CS1 -->
@@ -1033,7 +1073,7 @@
     <div class="resume-header">
       <div class="resume-name">Valeriia Portas</div>
       <div class="resume-contact-line">
-        <span>valeriamufuni@gmail.com</span>
+        <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="98eef9f4fdeaf1f9f5edfeedf6f1d8fff5f9f1f4b6fbf7f5">[email&#160;protected]</a></span>
         <span>917-607-3749</span>
         <span>Madison Township, PA 18444</span>
       </div>
@@ -1134,7 +1174,7 @@
   <div class="contact-cards">
     <div class="contact-card">
       <div class="contact-card-label">Email</div>
-      <div class="contact-card-val">valeriamufuni@gmail.com</div>
+      <div class="contact-card-val"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="aadccbc6cfd8c3cbc7dfccdfc4c3eacdc7cbc3c684c9c5c7">[email&#160;protected]</a></div>
     </div>
     <div class="contact-card">
       <div class="contact-card-label">Phone</div>
@@ -1148,12 +1188,22 @@
   <div class="footer-line">© 2024 Valeriia Portas · UX Research Portfolio</div>
 </section>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // Fade-up on scroll
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
   }, { threshold: 0.1 });
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Scroll progress bar
+  const sp = document.getElementById('scrollProgress');
+  const onScroll = () => {
+    const h = document.documentElement;
+    const scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+    sp.style.width = (scrolled * 100) + '%';
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 </script>
 </body>
 </html>
