@@ -302,7 +302,7 @@
   }
   .process-step {
     background: var(--navy);
-    border-radius: 4px;
+    border-radius: 12px;
     padding: 1.8rem 1.4rem;
     position: relative;
     overflow: hidden;
@@ -331,6 +331,8 @@
     font-size: 0.82rem; line-height: 1.6;
     color: rgba(255,255,255,0.65);
   }
+
+
 
   /* ── CASE STUDIES ── */
   #work { background: var(--white); }
@@ -631,7 +633,21 @@
   @media (max-width: 900px) {
     .about-grid { grid-template-columns: 1fr; }
     .about-photo { aspect-ratio: 3/4; max-width: 340px; }
-    .process-steps { grid-template-columns: repeat(3,1fr); }
+    .process-steps { grid-template-columns: 1fr; max-width: 500px; }
+    .process-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.2rem;
+      padding: 1.5rem 1.4rem;
+    }
+    .process-num {
+      flex-shrink: 0;
+      font-size: 2.6rem;
+      margin-bottom: 0;
+    }
+    .process-content {
+      flex: 1;
+    }
     .cs-two-col { grid-template-columns: 1fr; }
     .cs-phases { grid-template-columns: 1fr; }
     .skills-grid { grid-template-columns: 1fr; }
@@ -755,33 +771,43 @@
   <div class="process-steps fade-up">
     <div class="process-step">
       <div class="process-num">01</div>
-      <div class="process-name">Discover</div>
-      <div class="process-divider"></div>
-      <div class="process-desc">Stakeholder interviews, secondary research, competitive audit, scoping research questions</div>
+      <div class="process-content">
+        <div class="process-name">Discover</div>
+        <div class="process-divider"></div>
+        <div class="process-desc">Stakeholder interviews, secondary research, competitive audit, scoping research questions</div>
+      </div>
     </div>
     <div class="process-step">
       <div class="process-num">02</div>
-      <div class="process-name">Design</div>
-      <div class="process-divider"></div>
-      <div class="process-desc">Study design, screener creation, discussion guides, consent forms &amp; research kick-off decks</div>
+      <div class="process-content">
+        <div class="process-name">Design</div>
+        <div class="process-divider"></div>
+        <div class="process-desc">Study design, screener creation, discussion guides, consent forms &amp; research kick-off decks</div>
+      </div>
     </div>
     <div class="process-step">
       <div class="process-num">03</div>
-      <div class="process-name">Execute</div>
-      <div class="process-divider"></div>
-      <div class="process-desc">Moderated &amp; unmoderated sessions, surveys, field observations, A/B testing</div>
+      <div class="process-content">
+        <div class="process-name">Execute</div>
+        <div class="process-divider"></div>
+        <div class="process-desc">Moderated &amp; unmoderated sessions, surveys, field observations, A/B testing</div>
+      </div>
     </div>
     <div class="process-step">
       <div class="process-num">04</div>
-      <div class="process-name">Analyze</div>
-      <div class="process-divider"></div>
-      <div class="process-desc">Affinity mapping, qualitative synthesis, SQL &amp; quant analysis, synthesis workshops</div>
+      <div class="process-content">
+        <div class="process-name">Analyze</div>
+        <div class="process-divider"></div>
+        <div class="process-desc">Affinity mapping, qualitative synthesis, SQL &amp; quant analysis, synthesis workshops</div>
+      </div>
     </div>
     <div class="process-step">
       <div class="process-num">05</div>
-      <div class="process-name">Activate</div>
-      <div class="process-divider"></div>
-      <div class="process-desc">Research reports, persona playbooks, readouts, design recommendations &amp; roadmap input</div>
+      <div class="process-content">
+        <div class="process-name">Activate</div>
+        <div class="process-divider"></div>
+        <div class="process-desc">Research reports, persona playbooks, readouts, design recommendations &amp; roadmap input</div>
+      </div>
     </div>
   </div>
 </section>
